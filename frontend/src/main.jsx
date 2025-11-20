@@ -1,11 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import App from './App.jsx'
-import Home from './Home.jsx'
-import Leaderboard from './Leaderboard.jsx'
+import App from './components/App.jsx'
+import Home from './components/Home.jsx'
+import Leaderboard from './components/Leaderboard.jsx'
 import './index.css'
-import About from './About.jsx'
+import About from './components/About.jsx'
 
 const router = createBrowserRouter([
   {
