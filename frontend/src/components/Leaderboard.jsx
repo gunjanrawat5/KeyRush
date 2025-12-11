@@ -14,7 +14,7 @@ const Leaderboard = () => {
           Current Standings
         </h1>
 
-        <div className="overflow-hidden rounded-xl bg-[#0b2038] shadow-lg border border-white/10">
+        <div className="overflow-hidden rounded-xl bg-[#0b2038] shadow-lg border border-white/10 font-[Quantico]">
           <table className="min-w-full divide-y divide-white/10">
             <thead className="bg-white/5">
               <tr className="text-left text-sm font-semibold text-[#ffffffcc]">
