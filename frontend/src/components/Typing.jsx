@@ -14,7 +14,7 @@ const Typing = ({ onStart, isActive, onStatsChange }) => {
       onStatsChange({ correct: 0, total: 0 })
     }
   }, [onStatsChange])
-  
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (!isActive) return
@@ -23,7 +23,7 @@ const Typing = ({ onStart, isActive, onStatsChange }) => {
       // ignore non-character keys (Shift, Ctrl, etc.)
       if (key.length !== 1 && key !== ' ') return
 
-      // first key => start timer
+      // first key = start timer
       if (!started) {
         setStarted(true)
         if (typeof onStart === 'function') onStart()
