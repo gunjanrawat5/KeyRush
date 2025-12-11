@@ -3,13 +3,21 @@ import React, { useEffect, useState } from 'react'
 const text =
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore quisquam quibusdam, iste placeat, veritatis esse molestias magnam repellat nam nostrum facilis cum, repudiandae quam labore enim voluptate corrupti commodi nulla accusamus! Porro at recusandae doloremque, consequatur rerum a, dolorum ut pariatur fugit perspiciatis tempore. Tenetur."
 
-const Typing = ({ onStart }) => {
+const Typing = ({ onStart, isActive, onStatsChange }) => {
   const [index, setIndex] = useState(0)
   const [wrong, setWrong] = useState(false)
   const [started, setStarted] = useState(false)
+  const [totalTyped, setTotalTyped] = useState(0)
 
   useEffect(() => {
+    if (typeof onStatsChange === 'function') {
+      onStatsChange({ correct: 0, total: 0 })
+    }
+  }, [onStatsChange])
+  
+  useEffect(() => {
     const handleKeyDown = (e) => {
+      if (!isActive) return
       const key = e.key
 
       // ignore non-character keys (Shift, Ctrl, etc.)
@@ -20,27 +28,33 @@ const Typing = ({ onStart }) => {
         setStarted(true)
         if (typeof onStart === 'function') onStart()
       }
+      if (index >= text.length) return
 
-      setIndex(prevIndex => {
-        if (prevIndex >= text.length) return prevIndex
+      const expectedChar = text[index]
+      const pressed = key.toLowerCase()
+      const expected = expectedChar.toLowerCase()
 
-        const expectedChar = text[prevIndex]
-        const pressed = key.toLowerCase()
-        const expected = expectedChar.toLowerCase()
+      const newTotal = totalTyped + 1
+      let newIndex = index
 
-        if (pressed === expected) {
-          setWrong(false)
-          return prevIndex + 1
-        } else {
-          setWrong(true)
-          return prevIndex
-        }
-      })
+      if (pressed === expected) {
+        newIndex = index + 1
+        setWrong(false)
+      } else {
+        setWrong(true)
+      }
+
+      setIndex(newIndex)
+      setTotalTyped(newTotal)
+
+      if (typeof onStatsChange === 'function') {
+        onStatsChange({ correct: newIndex, total: newTotal })
+      }
     }
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [started, onStart]) // text is constant, no need in deps
+  }, [isActive, started, index, totalTyped, onStart, onStatsChange])
 
   return (
     <div className="w-2/3 tracking-wider text-3xl">
